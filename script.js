@@ -1,8 +1,8 @@
+'use strict';
+
 import * as Lang from './modules/lang.js';
 import * as Settings from './modules/settings.js'
 import * as CSSHelper from './modules/css.js';
-
-'use strict';
 
 // PLAYER VARIABLES
 // These are the interchangeable variables
