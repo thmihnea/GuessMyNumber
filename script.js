@@ -1,46 +1,16 @@
+import * as Lang from './modules/lang.js';
+import * as Settings from './modules/settings.js'
+import * as CSSHelper from './modules/css.js';
+
 'use strict';
-
-// SETTINGS
-// General settings used for the game.
-// Includes stuff such as settings, colors for
-// background-chaning and messages.
-
-const LOWER_BOUND = 1;
-const UPPER_BOUND = 21;
-
-const LOWER_BOUND_REWARD = 1;
-const UPPER_BOUND_REWARD = 10;
-
-const DEFAULT_SCORE = 20;
-const DEFAULT_HIGH_SCORE = 20;
-
-const LOSE_SCORE = 0;
-
-const LANG_GAME_TITLE = "Guess My Number!";
-const LANG_PICK_NUMBER = "Pick a number!";
-const LANG_NAN = "This is not a number, silly!";
-const LANG_DEFAULT_NUMBER_SYMBOL = "?";
-
-const COLOR_RED = '#CC0000';
-const COLOR_GREY = '#222';
-const COLOR_GREEN = '#60b347';
-
-const GUESS_MESSAGES = ["You guessed it!", "How did he do it?", "He's insane, but he's right!",
-"Here he comes with a guess!", "But how good are you to guess it?", "Sheesh man, you're insane!",
-"A wild guess has appeared!"];
-const FAIL_MESSAGES = ["You're garbage!", "Try harder!", "It feels like you're a bot, maybe try a CAPTCHA?",
-"You're horrendous to watch!", "You're horrible!", "Are you sure you're okay?", "You have no idea what you're doing!"];
-const LOSS_MESSAGES = ["You lost!", "Imagine losing this game.", "AHAHAHAHAHAHA!", "LOL UR SO BAD"];
-
-// END SETTINGS.
 
 // PLAYER VARIABLES
 // These are the interchangeable variables
 // for the player, namely the player's
 // score and highscore.
 
-let score = DEFAULT_SCORE;
-let highScore = DEFAULT_HIGH_SCORE;
+let score = Settings.DEFAULT_SCORE;
+let highScore = Settings.DEFAULT_HIGH_SCORE;
 
 // END VARIABLES.
 
@@ -108,28 +78,28 @@ const updateHighScore = (newValue) => {
 }
 
 const getHash = () => {
-    return getRandom(LOWER_BOUND, UPPER_BOUND);
+    return getRandom(Settings.LOWER_BOUND, Settings.UPPER_BOUND);
 }
 
 const getReward = () => {
-    return getRandom(LOWER_BOUND_REWARD, UPPER_BOUND_REWARD);
+    return getRandom(Settings.LOWER_BOUND_REWARD, Settings.UPPER_BOUND_REWARD);
 }
 
 const reset = () => {
-    updateMessage(LANG_PICK_NUMBER);
-    setScore(DEFAULT_SCORE);
-    updateNumber(LANG_DEFAULT_NUMBER_SYMBOL);
+    updateMessage(Lang.LANG_PICK_NUMBER);
+    setScore(Settings.DEFAULT_SCORE);
+    updateNumber(Lang.LANG_DEFAULT_NUMBER_SYMBOL);
     updateScore(getScore());
-    setBackgroundColor(COLOR_GREY);
-    update_h1(LANG_GAME_TITLE);
+    setBackgroundColor(CSSHelper.COLOR_GREY);
+    update_h1(Lang.LANG_GAME_TITLE);
 }
 
 const displayLose = (showScoreReset) => {
-    const message = computeRandomMessage(LOSS_MESSAGES);
+    const message = computeRandomMessage(Lang.LOSS_MESSAGES);
     update_h1(message);
 
-    updateScore(LOSE_SCORE);
-    setBackgroundColor(COLOR_RED);
+    updateScore(Settings.LOSE_SCORE);
+    setBackgroundColor(CSSHelper.COLOR_RED);
 
     if (showScoreReset) {
         updateScore(getScore());
@@ -139,7 +109,7 @@ const displayLose = (showScoreReset) => {
 const play = () => {
     const userInput = Number(getFieldValue("guess"));
     if (!(userInput)) {
-        updateMessage(LANG_NAN);
+        updateMessage(Lang.LANG_NAN);
         return;
     }
     const hash = getHash();
@@ -159,7 +129,7 @@ const play = () => {
         }
     }
     updateNumber(hash);
-    update_h1(LANG_GAME_TITLE);
+    update_h1(Lang.LANG_GAME_TITLE);
 }
 
 // END CONSTANT FUNCTIONS.
@@ -199,20 +169,20 @@ function updateHighScoreVisually(newHighScore) {
 
 function updateScoreOnGuess(finalScore) {
     const receivedPoints = finalScore - getScore();
-    const message = computeRandomMessage(GUESS_MESSAGES);
+    const message = computeRandomMessage(Lang.GUESS_MESSAGES);
 
     updateMessage(`${message} (+${receivedPoints}p)`);
     updateScore(finalScore);
 
     setScore(finalScore);
-    setBackgroundColor(COLOR_GREEN);
+    setBackgroundColor(CSSHelper.COLOR_GREEN);
 }
 
 function updateScoreOnFail() {
-    const message = computeRandomMessage(FAIL_MESSAGES);
+    const message = computeRandomMessage(Lang.FAIL_MESSAGES);
 
     updateMessage(`${message} (-1p)`);
-    setBackgroundColor(COLOR_GREY);
+    setBackgroundColor(CSSHelper.COLOR_GREY);
 
     setScore(getScore() - 1);
     updateScore(getScore());
